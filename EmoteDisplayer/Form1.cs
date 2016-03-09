@@ -42,7 +42,7 @@ namespace EmoteDisplayer
             InitializeComponent();
             for (int i = 0; i < emotes.Length; i++)
             {
-                emotes[i] = "68856";
+                emotes[i] = @"https://cdn.betterttv.net/emote/555015b77676617e17dd2e8e/1x";
             }
 
 
@@ -124,8 +124,16 @@ namespace EmoteDisplayer
                 picturebox.SizeMode = PictureBoxSizeMode.StretchImage;
 
                 picturebox.ImageLocation = emotes[i];
+                string imageUrl = emotes[i];
+                WebRequest request = WebRequest.Create(imageUrl);
+                WebResponse response = request.GetResponse();
+                Image image = Image.FromStream(response.GetResponseStream());
 
-                picturebox.Size = new Size(42, 48);
+                double divisor = image.Height / 48.0;
+                double x = image.Width / divisor;
+                double y = image.Height / divisor;
+                
+                picturebox.Size = new Size((int) x, (int) y);
                 this.Controls.Add(picturebox);
             }
         }
